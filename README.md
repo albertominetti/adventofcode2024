@@ -13,7 +13,7 @@ Solutions in Java for the Advent of Code in 2024
 
 ## Automatic tool
 
-This year I create an automation in Java to quickly setup the daily environment.
+This year I created an automation in Java to quickly setup the daily environment.
 
 The code is in [DaySetup.java](src/main/java/aminetti/adventofcode2024/DaySetup.java), it uses [DayXX.java](src/main/java/aminetti/adventofcode2024/dayXX/DayXX.java) and [DayXXTest.java](src/test/java/aminetti/adventofcode2024/dayXX/DayXXTest.java) as templates for the main code and the tests.
 
