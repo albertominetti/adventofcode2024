@@ -13,4 +13,4 @@ Solutions in Java for the Advent of Code in 2024
 
 ## Automatic tool
 
-This year I create an automation to quickly setup the environment; the script download the daily input to the `test/resources` folder, it prepares the initial Java code for the main algorithm and it prepares the tests to run the algorithm with the proper input. The code is in [DaySetup.java](src/main/aminetti/adventofcode2024/DaySetup.java) and it uses [DayXX.java](src/main/aminetti/adventofcode2024/dayXX/DayXX.java) and [DayXXTest.java](src/test/aminetti/adventofcode2024/dayXX/DayXXTest.java) as templates for the main code and the tests.
+This year I create an automation to quickly setup the environment; the script download the daily input to the `test/resources` folder, it prepares the initial Java code for the main algorithm and it prepares the tests to run the algorithm with the proper input. The code is in [DaySetup.java](src/main/java/aminetti/adventofcode2024/DaySetup.java) and it uses [DayXX.java](src/main/java/aminetti/adventofcode2024/dayXX/DayXX.java) and [DayXXTest.java](src/test/java/aminetti/adventofcode2024/dayXX/DayXXTest.java) as templates for the main code and the tests.
