@@ -33,7 +33,7 @@ public class DaySetup {
         int year = LocalDate.now().getYear();
         int day = getCurrentDay();
 
-        cleanCodeAndTestAndInputForDay(year, day);
+        // cleanCodeAndTestAndInputForDay(year, day);
 
         downloadDayInput(year, day);
         prepareCodeForDay(year, day);
@@ -72,7 +72,7 @@ public class DaySetup {
 
         HttpRequest req = HttpRequest.newBuilder()
                 .uri(uri)
-                .header("User-Agent", "github.com/albertominetti/")
+                .header("User-Agent", "github.com/albertominetti/adventofcode2024")
                 .GET().build();
 
         try (HttpClient client = HttpClient.newBuilder()

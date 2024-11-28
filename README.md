@@ -23,4 +23,8 @@ When the `DaySetup::main` runs it:
 2. prepares the initial Java code for the main algorithm 
 3. prepares the tests to run the algorithm with the proper input
 
+This repo does follow the automation guidelines on the `/r/adventofcode` [community wiki](https://www.reddit.com/r/adventofcode/wiki/faqs/automation). Specifically:
 
+- Inputs files are downloaded once and locally cached
+- It is always possible delete the local copy and ensure to download a new uncorrupted copy
+- The `User-Agent` header contains the info about this repository
