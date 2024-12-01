@@ -33,7 +33,7 @@ public class Day01 {
             if (matcher.matches()) {
                 Integer a = Integer.valueOf(matcher.group(1));
                 Integer b = Integer.valueOf(matcher.group(2));
-                LOGGER.info("Reading: {} and {}", a, b);
+                LOGGER.debug("Reading: {} and {}", a, b);
                 left.add(a);
                 right.add(b);
             } else {
@@ -56,7 +56,7 @@ public class Day01 {
             if (matcher.matches()) {
                 Long a = Long.valueOf(matcher.group(1));
                 Long b = Long.valueOf(matcher.group(2));
-                LOGGER.info("Reading: {} and {}", a, b);
+                LOGGER.debug("Reading: {} and {}", a, b);
                 left.compute(a, (k, v) -> (v == null) ? 1 : v + 1);
                 right.compute(b, (k, v) -> (v == null) ? 1 : v + 1);
             } else {
