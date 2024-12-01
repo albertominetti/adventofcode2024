@@ -4,10 +4,10 @@ import com.google.common.collect.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigInteger;
-import java.sql.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +33,7 @@ public class Day01 {
             if (matcher.matches()) {
                 Integer a = Integer.valueOf(matcher.group(1));
                 Integer b = Integer.valueOf(matcher.group(2));
-                LOGGER.info("Reading: {} and {}", a ,b);
+                LOGGER.info("Reading: {} and {}", a, b);
                 left.add(a);
                 right.add(b);
             } else {
@@ -42,11 +42,31 @@ public class Day01 {
         }
 
         return Streams.zip(left.stream().sorted(), right.stream().sorted(),
-                (a, b) -> Math.abs(a-b)).reduce(0, (a, b) -> a + b);
+                (a, b) -> Math.abs(a - b)).reduce(0, Integer::sum);
     }
 
     public long solvePart2() {
+        Pattern p = Pattern.compile("(\\d+)\\s+(\\d+)");
 
-        return 0;
+        Map<Long, Long> left = new HashMap<>(input.size());
+        Map<Long, Long> right = new HashMap<>(input.size());
+
+        for (String s : input) {
+            Matcher matcher = p.matcher(s);
+            if (matcher.matches()) {
+                Long a = Long.valueOf(matcher.group(1));
+                Long b = Long.valueOf(matcher.group(2));
+                LOGGER.info("Reading: {} and {}", a, b);
+                left.compute(a, (k, v) -> (v == null) ? 1 : v + 1);
+                right.compute(b, (k, v) -> (v == null) ? 1 : v + 1);
+            } else {
+                throw new IllegalArgumentException("Invalid input: " + s);
+            }
+
+        }
+
+        return left.keySet().stream().
+                map((k) -> k * left.get(k) * right.getOrDefault(k, 0L))
+                .reduce(0L, Long::sum);
     }
 }
