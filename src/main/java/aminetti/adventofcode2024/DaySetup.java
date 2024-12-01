@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.ZoneId;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,7 +42,7 @@ public class DaySetup {
 
     }
 
-    static void cleanCodeAndTestAndInputForDay(int year, int day) throws IOException, InterruptedException {
+    static void cleanCodeAndTestAndInputForDay(int year, int day) throws IOException {
         String basePackageName = String.format("adventofcode%d", year);
         String packageName = String.format("day%02d", day);
 
@@ -106,7 +107,7 @@ public class DaySetup {
     }
 
 
-    static void prepareTestsForDay(int year, int day) throws IOException, InterruptedException {
+    static void prepareTestsForDay(int year, int day) throws IOException {
         String basePackageName = String.format("adventofcode%d", year);
         String packageName = String.format("day%02d", day);
         String testClassName = String.format("Day%02dTest", day);
@@ -135,7 +136,7 @@ public class DaySetup {
 
     }
 
-    static void prepareCodeForDay(int year, int day) throws IOException, InterruptedException {
+    static void prepareCodeForDay(int year, int day) throws IOException {
         String basePackageName = String.format("adventofcode%d", year);
         String packageName = String.format("day%02d", day);
         String className = String.format("Day%02d", day);
@@ -182,9 +183,12 @@ public class DaySetup {
     }
 
     static int getCurrentDay() {
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now(ZoneId.of("America/New_York"));
         if (now.getMonth() != Month.DECEMBER) {
             throw new IllegalArgumentException("It is still not December.");
+        }
+        if (now.getDayOfMonth() > 25) {
+            throw new IllegalArgumentException("No more exercises after the 25th.");
         }
 
         return now.getDayOfMonth();
