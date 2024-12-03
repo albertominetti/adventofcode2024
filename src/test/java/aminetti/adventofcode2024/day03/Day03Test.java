@@ -52,13 +52,13 @@ class Day03Test {
         long l = solver.solvePart2();
 
         // then
-        assertThat(l, is(0L));
+        assertThat(l, is(80570939L));
     }
 
     @Test
     void testInputPart2() throws IOException {
         // given
-        List<String> input = readLines(resourceToString("/day03/day03_input_test.txt", UTF_8));
+        List<String> input = readLines(resourceToString("/day03/day03_input_test2.txt", UTF_8));
 
         // when
         Day03 solver = new Day03();
@@ -66,7 +66,7 @@ class Day03Test {
         long l = solver.solvePart2();
 
         // then
-        assertThat(l, is(0L));
+        assertThat(l, is(48L));
     }
 
 

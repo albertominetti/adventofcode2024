@@ -38,7 +38,34 @@ public class Day03 {
     }
 
     public long solvePart2() {
+        Pattern p = Pattern.compile("(?:mul\\((\\d{1,3}),(\\d{1,3})\\))|(?:do\\(\\))|(?:don't\\(\\))");
 
-        return 0;
+        long sum = 0L;
+        boolean mulEnabled = true;
+        for (String s : input) {
+            Matcher matcher = p.matcher(s);
+
+            while (matcher.find()) {
+                String fullMatch = matcher.group(0);
+                if (fullMatch.startsWith("mul")) {
+                    if (mulEnabled) {
+                        LOGGER.info("Executing {}", fullMatch);
+                        Long a = Long.valueOf(matcher.group(1));
+                        Long b = Long.valueOf(matcher.group(2));
+                        sum += a * b;
+                    } else {
+                        LOGGER.info("Skipping {}", fullMatch);
+                    }
+                } else if (fullMatch.startsWith("do()")) {
+                    LOGGER.info("Enabling {}", fullMatch);
+                    mulEnabled = true;
+                } else if (fullMatch.startsWith("don't()")) {
+                    LOGGER.info("Disabling {}", fullMatch);
+                    mulEnabled = false;
+                }
+            }
+        }
+
+        return sum;
     }
 }
