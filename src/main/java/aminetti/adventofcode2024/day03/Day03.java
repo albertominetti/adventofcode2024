@@ -49,18 +49,18 @@ public class Day03 {
                 String fullMatch = matcher.group(0);
                 if (fullMatch.startsWith("mul")) {
                     if (mulEnabled) {
-                        LOGGER.info("Executing {}", fullMatch);
+                        LOGGER.debug("Executing {}", fullMatch);
                         Long a = Long.valueOf(matcher.group(1));
                         Long b = Long.valueOf(matcher.group(2));
                         sum += a * b;
                     } else {
-                        LOGGER.info("Skipping {}", fullMatch);
+                        LOGGER.debug("Skipping {}", fullMatch);
                     }
                 } else if (fullMatch.startsWith("do()")) {
-                    LOGGER.info("Enabling {}", fullMatch);
+                    LOGGER.debug("Enabling {}", fullMatch);
                     mulEnabled = true;
                 } else if (fullMatch.startsWith("don't()")) {
-                    LOGGER.info("Disabling {}", fullMatch);
+                    LOGGER.debug("Disabling {}", fullMatch);
                     mulEnabled = false;
                 }
             }
