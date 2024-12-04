@@ -37,4 +37,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
-/src/main/resources/cookie.txt
+
+### Personal cookies
+**/cookies.txt
+
+### Personal inputs
+**/*_input.txt
