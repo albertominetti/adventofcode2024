@@ -3,7 +3,9 @@ package aminetti.adventofcode2024.day04;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Day04 {
     private static final Logger LOGGER = LoggerFactory.getLogger(Day04.class);
@@ -46,9 +48,9 @@ public class Day04 {
 
         // N, S, W, O
         count += lookingFor("MAS", i - 1, j, -1, 0);
-        count += lookingFor("MAS", i + 1, j , +1, 0);
-        count += lookingFor("MAS", i , j + 1, 0, +1);
-        count += lookingFor("MAS", i , j - 1, 0, -1);
+        count += lookingFor("MAS", i + 1, j, +1, 0);
+        count += lookingFor("MAS", i, j + 1, 0, +1);
+        count += lookingFor("MAS", i, j - 1, 0, -1);
 
         return count;
     }
@@ -69,7 +71,30 @@ public class Day04 {
     }
 
     public long solvePart2() {
-
-        return 0;
+        long sum = 0;
+        for (int i = 1; i < input.size() - 1; i++) {
+            String l = input.get(i);
+            for (int j = 1; j < l.length() - 1; j++) {
+                if (checkCrossMas(i, j)) {
+                    sum++;
+                }
+            }
+        }
+        return sum;
     }
+
+
+    private boolean checkCrossMas(int i, int j) {
+        return input.get(i).charAt(j) == 'A'
+                && checkMandS(i - 1, j - 1, i + 1, j + 1)
+                && checkMandS(i + 1, j - 1, i - 1, j + 1);
+    }
+
+    private boolean checkMandS(int i, int j, int a, int b) {
+        Set<Character> foundChars = new HashSet<>();
+        foundChars.add(input.get(i).charAt(j));
+        foundChars.add(input.get(a).charAt(b));
+        return foundChars.containsAll(Set.of('M', 'S'));
+    }
+
 }

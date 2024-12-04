@@ -73,7 +73,7 @@ public class DaySetup {
 
         HttpRequest req = HttpRequest.newBuilder()
                 .uri(uri)
-                .header("User-Agent", "github.com/albertominetti/adventofcode2024")
+                .header("User-Agent", "github.com/albertominetti/adventofcode2024-java")
                 .GET().build();
 
         try (HttpClient client = HttpClient.newBuilder()
@@ -87,9 +87,9 @@ public class DaySetup {
 
     static void prepareCookie() throws IOException {
         CookieManager cookieManager = new CookieManager();
-        String textCookie = IOUtils.resourceToString("/cookie.txt", UTF_8);
+        String textCookie = IOUtils.resourceToString("/cookies.txt", UTF_8);
         if (textCookie == null) {
-            throw new IllegalArgumentException("Missing cookie file, please check your cookie.txt file in the resource directory.");
+            throw new IllegalArgumentException("Missing cookie file, please check your cookies.txt file in the resource directory.");
         }
         Pattern patternForCookie = Pattern.compile("session=([a-f0-9]+)");
         Matcher matcher = patternForCookie.matcher(textCookie);
@@ -100,7 +100,7 @@ public class DaySetup {
             cookieManager.getCookieStore()
                     .add(URI.create("https://adventofcode.com"), sessionCookie);
         } else {
-            throw new IllegalArgumentException("Invalid cookie format, please check your cookie.txt file.");
+            throw new IllegalArgumentException("Invalid cookie format, please check your cookies.txt file.");
         }
 
         CookieHandler.setDefault(cookieManager);
