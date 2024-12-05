@@ -1,7 +1,5 @@
 package aminetti.adventofcode2024.day05;
 
-import aminetti.adventofcode2023.day05.SeedFertilizer;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,7 +122,70 @@ public class Day05 {
 
 
     public long solvePart2() {
+        LOGGER.info("Rules: {}", rules);
+        LOGGER.info("All pages: {}", allPages);
 
-        return 0;
+
+        List<List<String>> unOrderedLists = allPages.stream().filter(x -> !isInOrder(x)).collect(Collectors.toList());
+
+        long sum = 0;
+        for (List<String> pageList : unOrderedLists) {
+            LOGGER.info("Ordering {}", pageList);
+            List<String> orderedList = orderList(pageList);
+            String middlePage = orderedList.get(pageList.size() / 2);
+            LOGGER.info("Ordered the list {} in this way {}; and the middle element is {}", pageList, orderedList, middlePage);
+            sum += Long.parseLong(middlePage);
+
+        }
+
+
+        return sum;
+    }
+
+    private List<String> orderList(List<String> pageList) {
+        Map<String, Integer> inEdgeCount = pageList.stream().collect(Collectors.toMap(Function.identity(), (x) -> 0));
+        for (String p : rules.keySet()) {
+            for (String v : rules.get(p)) {
+                if (pageList.contains(v) && pageList.contains(p)) {
+                    inEdgeCount.put(v, inEdgeCount.get(v) + 1);
+                }
+            }
+        }
+        LOGGER.info("The pages {} have this inEdgeCount: {}", pageList, inEdgeCount);
+        List<String> firstElements = inEdgeCount.entrySet().stream()
+                .filter(e -> e.getValue() == 0)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        List<List<String>> partialOrder = new ArrayList<>();
+        partialOrder.add(firstElements);
+
+        for (int i = 0; i < partialOrder.size(); i++) {
+            List<String> level = partialOrder.get(i);
+            if (level.isEmpty()) {
+                break;
+            }
+            List<String> nextLevel = new ArrayList<>();
+            partialOrder.add(nextLevel);
+            for (String e : level) {
+                if (!rules.containsKey(e)) {
+                    continue;
+                }
+                for (String v : rules.get(e)) {
+                    if (!pageList.contains(v)) {
+                        continue;
+                    }
+                    Integer inEdgesForV = inEdgeCount.get(v);
+                    inEdgesForV--;
+                    inEdgeCount.put(v, inEdgesForV);
+                    if (inEdgesForV == 0) {
+                        nextLevel.add(v);
+                    }
+                }
+            }
+        }
+        ArrayList<String> unordered = new ArrayList<>(pageList);
+        return partialOrder.stream().flatMap(x -> x.stream()).toList();
+
     }
 }

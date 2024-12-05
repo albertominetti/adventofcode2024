@@ -24,7 +24,7 @@ class Day05Test {
         long l = solver.solvePart1();
 
         // then
-        assertThat(l, is(0L));
+        assertThat(l, is(5166L));
     }
 
     @Test
@@ -52,7 +52,7 @@ class Day05Test {
         long l = solver.solvePart2();
 
         // then
-        assertThat(l, is(0L));
+        assertThat(l, is(4679L));
     }
 
     @Test
@@ -66,7 +66,7 @@ class Day05Test {
         long l = solver.solvePart2();
 
         // then
-        assertThat(l, is(0L));
+        assertThat(l, is(123L));
     }
 
 
