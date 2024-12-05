@@ -28,7 +28,7 @@ public class Day05 {
                     firstInputPart = false;
                     continue;
                 }
-                //LOGGER.debug("Line: {}", s);
+                LOGGER.trace("Line: {}", s);
                 String[] split = s.split("\\|");
                 List<String> currentRule = rules.getOrDefault(split[0], new ArrayList<>());
                 currentRule.add(split[1]);
@@ -37,19 +37,21 @@ public class Day05 {
                 String[] split = s.split(",");
                 allPages.add(Arrays.stream(split).toList());
             }
-
         }
-    }
 
-    public long solvePart1() {
         LOGGER.info("Rules: {}", rules);
         LOGGER.info("All pages: {}", allPages);
 
+    }
+
+    public long solvePart1() {
+
         long sum = 0;
         for (List<String> pageList : allPages) {
-            if (isInOrder(pageList)) {
+            List<List<String>> partialOrder = calculatePartialOrder(pageList);
+            if (isInOrder(pageList, partialOrder)) {
                 String middlePage = pageList.get(pageList.size() / 2);
-                LOGGER.info("Found ordered page: {}; adding {} to the sum", pageList, middlePage);
+                LOGGER.debug("Found ordered page: {}; adding {} to the sum", pageList, middlePage);
                 sum += Long.parseLong(middlePage);
             }
         }
@@ -58,57 +60,16 @@ public class Day05 {
         return sum;
     }
 
-    private boolean isInOrder(List<String> pageList) {
-        Map<String, Integer> inEdgeCount = pageList.stream().collect(Collectors.toMap(Function.identity(), (x) -> 0));
-        for (String p : rules.keySet()) {
-            for (String v : rules.get(p)) {
-                if (pageList.contains(v) && pageList.contains(p)) {
-                    inEdgeCount.put(v, inEdgeCount.get(v) + 1);
-                }
-            }
-        }
-        LOGGER.info("The pages {} have this inEdgeCount: {}", pageList, inEdgeCount);
-        List<String> firstElements = inEdgeCount.entrySet().stream()
-                .filter(e -> e.getValue() == 0)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-
-        List<List<String>> partialOrder = new ArrayList<>();
-        partialOrder.add(firstElements);
-
-        for (int i = 0; i < partialOrder.size(); i++) {
-            List<String> level = partialOrder.get(i);
-            if (level.isEmpty()) {
-                break;
-            }
-            List<String> nextLevel = new ArrayList<>();
-            partialOrder.add(nextLevel);
-            for (String e : level) {
-                if (!rules.containsKey(e)) {
-                    continue;
-                }
-                for (String v : rules.get(e)) {
-                    if (!pageList.contains(v)) {
-                        continue;
-                    }
-                    Integer inEdgesForV = inEdgeCount.get(v);
-                    inEdgesForV--;
-                    inEdgeCount.put(v, inEdgesForV);
-                    if (inEdgesForV == 0) {
-                        nextLevel.add(v);
-                    }
-                }
-            }
-        }
+    private boolean isInOrder(List<String> pageList, List<List<String>> partialOrder) {
 
         int currentLevel = 0;
         for (String p : pageList) {
             while (!partialOrder.get(currentLevel).contains(p)) {
-                LOGGER.info("{} is not in level [{}] {}, so switching to the next level", p, currentLevel, partialOrder.get(currentLevel));
+                LOGGER.debug("{} is not in level [{}] {}, so switching to the next level", p, currentLevel, partialOrder.get(currentLevel));
                 currentLevel++;
                 if (currentLevel > partialOrder.size() - 1) {
                     LOGGER.info("{} are NOT ordered", pageList);
-                    LOGGER.info(" current level {} and partialOrder {}", currentLevel, partialOrder);
+                    LOGGER.debug(" current level {} and partialOrder {}", currentLevel, partialOrder);
 
                     return false;
                 }
@@ -116,33 +77,11 @@ public class Day05 {
 
         }
 
-        LOGGER.info("{} are ordered", pageList);
+        LOGGER.debug("{} are ordered", pageList);
         return true;
     }
 
-
-    public long solvePart2() {
-        LOGGER.info("Rules: {}", rules);
-        LOGGER.info("All pages: {}", allPages);
-
-
-        List<List<String>> unOrderedLists = allPages.stream().filter(x -> !isInOrder(x)).collect(Collectors.toList());
-
-        long sum = 0;
-        for (List<String> pageList : unOrderedLists) {
-            LOGGER.info("Ordering {}", pageList);
-            List<String> orderedList = orderList(pageList);
-            String middlePage = orderedList.get(pageList.size() / 2);
-            LOGGER.info("Ordered the list {} in this way {}; and the middle element is {}", pageList, orderedList, middlePage);
-            sum += Long.parseLong(middlePage);
-
-        }
-
-
-        return sum;
-    }
-
-    private List<String> orderList(List<String> pageList) {
+    private List<List<String>> calculatePartialOrder(List<String> pageList) {
         Map<String, Integer> inEdgeCount = pageList.stream().collect(Collectors.toMap(Function.identity(), (x) -> 0));
         for (String p : rules.keySet()) {
             for (String v : rules.get(p)) {
@@ -151,7 +90,7 @@ public class Day05 {
                 }
             }
         }
-        LOGGER.info("The pages {} have this inEdgeCount: {}", pageList, inEdgeCount);
+        LOGGER.debug("The pages {} have this inEdgeCount: {}", pageList, inEdgeCount);
         List<String> firstElements = inEdgeCount.entrySet().stream()
                 .filter(e -> e.getValue() == 0)
                 .map(Map.Entry::getKey)
@@ -184,8 +123,25 @@ public class Day05 {
                 }
             }
         }
-        ArrayList<String> unordered = new ArrayList<>(pageList);
-        return partialOrder.stream().flatMap(x -> x.stream()).toList();
-
+        return partialOrder;
     }
+
+
+    public long solvePart2() {
+        long sum = 0;
+
+        for (List<String> pageList : allPages) {
+            List<List<String>> partialOrder = calculatePartialOrder(pageList);
+            if (isInOrder(pageList, partialOrder)) {
+                continue;
+            }
+            LOGGER.info("Ordering {}", pageList);
+            List<String> orderedList = partialOrder.stream().flatMap(Collection::stream).toList();
+            String middlePage = orderedList.get(pageList.size() / 2);
+            LOGGER.info(" ordered the list {} in this way {}; and the middle element is {}", pageList, orderedList, middlePage);
+            sum += Long.parseLong(middlePage);
+        }
+        return sum;
+    }
+
 }
