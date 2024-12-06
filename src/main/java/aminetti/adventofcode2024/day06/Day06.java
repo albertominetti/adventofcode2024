@@ -93,7 +93,7 @@ public class Day06 {
             if (o.equals(start)) {
                 continue;
             }
-            LOGGER.info("Obstruction at {}", o);
+            LOGGER.debug("Obstruction at {}", o);
 
             if (isLoop(start, o)) {
                 obstructionsForLoops.add(o);

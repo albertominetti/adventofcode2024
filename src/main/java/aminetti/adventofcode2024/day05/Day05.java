@@ -9,18 +9,14 @@ import java.util.stream.Collectors;
 
 public class Day05 {
     private static final Logger LOGGER = LoggerFactory.getLogger(Day05.class);
-    private List<String> input;
 
-    private HashMap<String, List<String>> rules = new HashMap<>();
-    private List<List<String>> allPages = new ArrayList<>();
+    private final HashMap<String, List<String>> rules = new HashMap<>();
+    private final List<List<String>> allPages = new ArrayList<>();
 
     public Day05() {
     }
 
     public void parseInput(List<String> input) {
-        this.input = input;
-
-
         var firstInputPart = true;
         for (String s : input) {
             if (firstInputPart) {
@@ -39,8 +35,8 @@ public class Day05 {
             }
         }
 
-        LOGGER.info("Rules: {}", rules);
-        LOGGER.info("All pages: {}", allPages);
+        LOGGER.debug("Rules: {}", rules);
+        LOGGER.debug("All pages: {}", allPages);
 
     }
 
@@ -68,7 +64,7 @@ public class Day05 {
                 LOGGER.debug("{} is not in level [{}] {}, so switching to the next level", p, currentLevel, partialOrder.get(currentLevel));
                 currentLevel++;
                 if (currentLevel > partialOrder.size() - 1) {
-                    LOGGER.info("{} are NOT ordered", pageList);
+                    LOGGER.debug("{} are NOT ordered", pageList);
                     LOGGER.debug(" current level {} and partialOrder {}", currentLevel, partialOrder);
 
                     return false;
@@ -135,10 +131,10 @@ public class Day05 {
             if (isInOrder(pageList, partialOrder)) {
                 continue;
             }
-            LOGGER.info("Ordering {}", pageList);
+            LOGGER.debug("Ordering {}", pageList);
             List<String> orderedList = partialOrder.stream().flatMap(Collection::stream).toList();
             String middlePage = orderedList.get(pageList.size() / 2);
-            LOGGER.info(" ordered the list {} in this way {}; and the middle element is {}", pageList, orderedList, middlePage);
+            LOGGER.debug(" ordered the list {} in this way {}; and the middle element is {}", pageList, orderedList, middlePage);
             sum += Long.parseLong(middlePage);
         }
         return sum;

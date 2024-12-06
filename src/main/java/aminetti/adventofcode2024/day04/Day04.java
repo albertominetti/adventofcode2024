@@ -62,7 +62,7 @@ public class Day04 {
         if (i < 0 || i >= ROWS || j < 0 || j >= COLS) {
             return 0;
         }
-        LOGGER.info("Index {} and {}", i, j);
+        LOGGER.debug("Index {} and {}", i, j);
         if (search.charAt(0) == input.get(i).charAt(j)) {
             return lookingFor(search.substring(1), i + dirI, j + dirJ, dirI, dirJ);
         }
