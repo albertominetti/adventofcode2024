@@ -28,3 +28,17 @@ This repo does follow the automation guidelines on the `/r/adventofcode` [commun
 - Inputs files are downloaded once and locally cached
 - It is always possible delete the local copy and ensure to download a new uncorrupted copy
 - The `User-Agent` header contains the info about this repository
+
+
+## Mistakes and wrong assumptions I did while solving puzzles
+
+- **Day 6**: 
+  - (part 1) missed that in a single step the guard could find his direction blocked and the direction at 90°, so he must turn by 180°
+  - (part 2) checking any possible positions for placing obstacles instead of using the initial path of the guard; it just requires more iterations and time 
+- **Day 5**: (part 1) considering that multiple items could be at the same topological order, the problem was simpler; it was a nice game to adapt a standard algorithm for topological order (Kahn's) to generate a data structure (`List<List<String>> partialOrder`) that holds the information about missing relation between items
+- **Day 4**: (part 1) forgot to check in diagonal
+- **Day 3**: (part 2) checking if `s.startsWith("do")` or `s.startsWith("don't")` and the first always triggers
+- **Day 2**: 
+  - (part 1) missed to check when two levels are equals
+  - (part 2) tried to fix the levels without the bruteforce approach
+- **Day 1**: (part 1) forgot to sort
