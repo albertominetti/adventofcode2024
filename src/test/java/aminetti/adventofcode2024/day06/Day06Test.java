@@ -1,6 +1,7 @@
 package aminetti.adventofcode2024.day06;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,7 +15,7 @@ import static org.hamcrest.Matchers.is;
 
 class Day06Test {
 
-    @Test
+    @Test @EnabledIf("inputExists")
     void actualInputPart1() throws IOException {
         // given
         List<String> input = readLines(resourceToString("/day06/day06_input.txt", UTF_8));
@@ -42,7 +43,7 @@ class Day06Test {
         assertThat(l, is(41L));
     }
 
-    @Test
+    @Test @EnabledIf("inputExists")
     void actualInputPart2() throws IOException {
         // given
         List<String> input = readLines(resourceToString("/day06/day06_input.txt", UTF_8));
@@ -72,5 +73,7 @@ class Day06Test {
         assertThat(l, is(6L));
     }
 
-
+    public static boolean inputExists() {
+        return Day06Test.class.getResource("/dayXX/dayXX_input.txt") != null;
+    }
 }
