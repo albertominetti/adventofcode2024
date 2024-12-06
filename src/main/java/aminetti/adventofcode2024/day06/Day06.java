@@ -1,6 +1,5 @@
 package aminetti.adventofcode2024.day06;
 
-import aminetti.adventofcode2023.day17.Day17;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
@@ -12,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static aminetti.adventofcode2024.day06.Day06.Direction.*;
+import static aminetti.adventofcode2024.day06.Day06.Direction.UP;
 
 public class Day06 {
     private static final Logger LOGGER = LoggerFactory.getLogger(Day06.class);
