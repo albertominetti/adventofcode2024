@@ -10,7 +10,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.io.IOUtils.readLines;
 import static org.apache.commons.io.IOUtils.resourceToString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
 
 class Day07Test {
 
@@ -54,7 +55,7 @@ class Day07Test {
         long l = solver.solvePart2();
 
         // then
-        assertThat(l, is(0L));
+        assertThat(l, is(286580387663654L));
     }
 
     @Test
@@ -68,7 +69,7 @@ class Day07Test {
         long l = solver.solvePart2();
 
         // then
-        assertThat(l, is(0L));
+        assertThat(l, is(11387L));
     }
 
     public static boolean inputExists() {

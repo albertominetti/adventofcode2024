@@ -46,10 +46,14 @@ public class Day07 {
     }
 
     public enum Op {
-        SUM, MULT;
+        SUM, MULT, CONCAT;
 
         public String print() {
-            return this == SUM ? "+" : "*";
+            return switch (this) {
+                case SUM -> "+";
+                case MULT -> "*";
+                case CONCAT -> "||";
+            };
         }
     }
 
@@ -102,7 +106,87 @@ public class Day07 {
     }
 
     public long solvePart2() {
+        long sum = 0;
+        for (int i = 0; i < results.size(); i++) {
+            Long result = results.get(i);
 
-        return 0;
+            LOGGER.debug("Checking {}", result);
+            long count = countOfCorrectOperatorsWithConcat(result, components.get(i), List.of(), newArrayList());
+            LOGGER.debug("count for {}: {}", result, count);
+            if (count > 0) {
+                sum += result;
+            }
+        }
+        return sum;
     }
+
+
+    private long countOfCorrectOperatorsWithConcat(long result, List<Long> longs, List<Op> operators, List<Long> components) {
+        if (longs.size() == 1) {
+            Long lastEl = Iterables.getOnlyElement(longs);
+            if (result == lastEl) {
+
+                String fullOperation = "(".repeat(operators.size()) + lastEl;
+
+                ArrayList<Op> mutableOps = newArrayList(operators);
+                ArrayList<Long> mutableComponents = newArrayList(components);
+                while (!mutableOps.isEmpty()) {
+                    fullOperation += mutableOps.removeLast().print() + "" + mutableComponents.removeLast() + ")";
+                }
+
+                LOGGER.debug("Operation: {}", fullOperation);
+                LOGGER.info("Found correct operators");
+                return 1;
+            }
+
+            return 0;
+
+        }
+
+        if (result <= 0 || longs.isEmpty()) {
+            return 0;
+        }
+
+
+        ArrayList<Op> opsForSum = newArrayList(operators);
+        opsForSum.add(Op.SUM);
+
+
+
+        ArrayList<Long> next = newArrayList(longs);
+        Long component = next.removeLast();
+
+        ArrayList<Long> nextComponents = newArrayList(components);
+        nextComponents.add(component);
+
+        long sumConcat = 0;
+        String stringResult = "" + result;
+        String stringComponent = "" + component;
+
+        LOGGER.info("Result: {} - longs: {}", result, longs);
+        LOGGER.info("Result: {} - stringComponent: {}", stringResult, stringComponent);
+
+        if (stringResult.length() > stringComponent.length() && stringResult.endsWith(stringComponent)) {
+            LOGGER.info("Trailing matches: Result: {} - stringComponent: {}", stringResult, stringComponent);
+
+            ArrayList<Op> opsForConcat = newArrayList(operators);
+            opsForConcat.add(Op.CONCAT);
+
+            long expectedResult = Long.parseLong(stringResult.substring(0, stringResult.length() - stringComponent.length()));
+            LOGGER.info("expectedResult: {}", expectedResult);
+            sumConcat += countOfCorrectOperatorsWithConcat(
+                    expectedResult,
+                    next, opsForConcat, nextComponents);
+        }
+
+        long sumMult = 0;
+        if (result % component == 0) {
+            ArrayList<Op> opsForMult = newArrayList(operators);
+            opsForMult.add(MULT);
+            sumMult += countOfCorrectOperatorsWithConcat(result / component, next, opsForMult, nextComponents);
+        }
+        return sumMult + sumConcat
+                + countOfCorrectOperatorsWithConcat(result - component, next, opsForSum, nextComponents);
+    }
+
 }
